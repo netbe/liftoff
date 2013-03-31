@@ -24,10 +24,13 @@ build/
 *.dat
 *.dep
 
+GITIGNORE
+
+GITIGNORE_PODS_CONTENTS = <<GITIGNORE_PODS
 # Cocoapods
 Pods
 Podfile.lock
-GITIGNORE
+GITIGNORE_PODS
 
 GITATTRIBUTES_CONTENTS = '*.pbxproj binary merge=union'
 
@@ -49,6 +52,10 @@ class GitHelper
   def generate_gitignore
     puts 'Writing .gitignore'
     write_unique_contents_to_file(GITIGNORE_CONTENTS, '.gitignore')
+
+    if Gem.loaded_specs['cocoapods'].version < Gem::Version.create('0.17')
+      write_unique_contents_to_file(GITIGNORE_PODS_CONTENTS, '.gitignore')
+    end
   end
 
   def generate_gitattributes
